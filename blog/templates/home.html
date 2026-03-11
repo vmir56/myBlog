@@ -1,0 +1,29 @@
+<!-- templates/blog/home.html -->
+{% extends 'blog/base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Добро пожаловать в мой блог!</h1>
+    <p>Здесь я делюсь своими мыслями, идеями и интересными находками.</p>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <h3>📖 Читайте</h3>
+        <p>Интересные статьи на разные темы</p>
+        <a href="{% url 'blog:post_list' %}" class="btn">К списку постов</a>
+    </div>
+    <div class="feature-card">
+        <h3>✍️ Пишите</h3>
+        <p>Делитесь своими мыслями с миром</p>
+        <a href="{% url 'blog:post_create' %}" class="btn">Создать пост</a>
+    </div>
+    <div class="feature-card">
+        <h3>📚 Узнавайте</h3>
+        <p>Новое каждый день</p>
+        <a href="{% url 'blog:about' %}" class="btn">О проекте</a>
+    </div>
+</div>
+{% endblock %}

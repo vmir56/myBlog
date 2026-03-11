@@ -1,0 +1,53 @@
+<!-- templates/blog/post_list.html -->
+{% extends 'blog/base.html' %}
+
+{% block title %}Список постов{% endblock %}
+
+{% block content %}
+<div class="post-list-header">
+    <h1>Все посты</h1>
+    <a href="{% url 'blog:post_create' %}" class="btn btn-primary">➕ Новый пост</a>
+</div>
+
+<div class="posts-grid">
+    {% for post in posts %}
+        <div class="post-card">
+            <h2><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></h2>
+            <p class="post-meta">
+                {{ post.created_at|date:"d.m.Y H:i" }}
+                {% if post.updated_at != post.created_at %}
+                    (ред. {{ post.updated_at|date:"d.m.Y H:i" }})
+                {% endif %}
+            </p>
+            <p class="post-excerpt">{{ post.content|truncatechars:200 }}</p>
+            <div class="post-actions">
+                <a href="{% url 'blog:post_detail' post.pk %}" class="btn-small">Читать</a>
+                <a href="{% url 'blog:post_edit' post.pk %}" class="btn-small edit">✏️</a>
+                <a href="{% url 'blog:post_delete' post.pk %}" class="btn-small delete">🗑️</a>
+            </div>
+        </div>
+    {% empty %}
+        <p class="empty-message">Пока нет постов. Создайте первый!</p>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+{% endblock %}

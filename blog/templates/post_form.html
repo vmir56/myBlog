@@ -1,0 +1,44 @@
+<!-- templates/blog/post_form.html -->
+{% extends 'blog/base.html' %}
+
+{% block title %}{% if object %}Редактирование{% else %}Создание{% endif %} поста{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>{% if object %}Редактировать пост{% else %}Создать новый пост{% endif %}</h1>
+
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-group {% if field.errors %}has-error{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div class="field-errors">
+                        {% for error in field.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if field.help_text %}
+                    <small class="help-text">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                {% if object %}Сохранить{% else %}Создать{% endif %}
+            </button>
+            <a href="{% url 'blog:post_list' %}" class="btn">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
